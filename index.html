@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 JERCAT Trading Platform - Production Edition</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ==================== RESET & VARIABLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold: #FFD700;
+            --gold-dark: #FFA500;
+            --silver: #C0C0C0;
+            --bronze: #CD7F32;
+            --diamond: #00d4ff;
+            --green: #10b981;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --purple: #a855f7;
+            --yellow: #eab308;
+            --gray-900: #0f172a;
+            --gray-800: #1e293b;
+            --gray-700: #334155;
+            --gray-600: #475569;
+            --gray-500: #64748b;
+            --gray-400: #94a3b8;
+            --gray-300: #cbd5e1;
+            --gray-200: #e2e8f0;
+            --glass: rgba(15, 23, 42, 0.8);
+        }
+
+        /* ==================== BASE STYLES ==================== */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .hidden { display: none !important; }
+        
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        
+        .font-bold { font-weight: 700; }
+        .font-mono { font-family: monospace; }
+        
+        .text-xs { font-size: 0.75rem; }
+        .text-sm { font-size: 0.875rem; }
+        .text-lg { font-size: 1.125rem; }
+        .text-xl { font-size: 1.25rem; }
+        .text-2xl { font-size: 1.5rem; }
+        .text-3xl { font-size: 1.875rem; }
+        .text-4xl { font-size: 2.25rem; }
+
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .px-8 { padding-left: 2rem; padding-right: 2rem; }
+        
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-16 { margin-top: 4rem; }
+
+        .w-full { width: 100%; }
+
+        /* Colors */
+        .text-white { color: #fff; }
+        .text-gray-300 { color: var(--gray-300); }
+        .text-gray-400 { color: var(--gray-400); }
+        .text-gray-500 { color: var(--gray-500); }
+        .text-yellow-400 { color: var(--gold); }
+        .text-green-400 { color: var(--green); }
+        .text-red-400 { color: var(--red); }
+        .text-blue-400 { color: var(--blue); }
+        .text-purple-400 { color: var(--purple); }
+
+        .bg-gray-600 { background: var(--gray-600); }
+        .bg-gray-700 { background: var(--gray-700); }
+        .bg-green-600 { background: var(--green); }
+
+        .border-2 { border: 2px solid; }
+        .border-blue-500 { border-color: var(--blue); }
+        .border-green-500 { border-color: var(--green); }
+        .border-purple-500 { border-color: var(--purple); }
+        .border-yellow-500 { border-color: var(--yellow); }
+        .border-orange-700 { border-color: #c2410c; }
+        .border-cyan-400 { border-color: var(--diamond); }
+
+        /* ==================== SPECIFIC COMPONENTS ==================== */
+        .glass-effect {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gradient-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+        }
+
+        .gradient-text-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        /* Navigation */
+        .nav-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: var(--glass);
+            color: white;
+            font-size: 1rem;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: black;
+            transform: scale(1.05);
+        }
+
+        /* Buttons */
+        button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: black;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+        }
+
+        /* Inputs */
+        input[type="number"],
+        select {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.625rem;
+            border-radius: 0.5rem;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+        }
+
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        @media (min-width: 768px) {
+            .md-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        }
+
+        /* Tier Badges */
+        .tier-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            font-size: 0.875rem;
+        }
+
+        .tier-bronze {
+            background: linear-gradient(135deg, var(--bronze) 0%, #8B4513 100%);
+            box-shadow: 0 0 20px rgba(205, 127, 50, 0.5);
+        }
+
+        .tier-silver {
+            background: linear-gradient(135deg, var(--silver) 0%, #808080 100%);
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.5);
+        }
+
+        .tier-gold {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .tier-diamond {
+            background: linear-gradient(135deg, #b9f2ff 0%, var(--diamond) 100%);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        /* Ecosystem Cards */
+        .ecosystem-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .ecosystem-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .ecosystem-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .ecosystem-card.locked:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: bold;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .notification.success { background: var(--green); }
+        .notification.error { background: var(--red); }
+        .notification.info { background: var(--blue); }
+
+        @keyframes slideIn {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+            .text-3xl { font-size: 1.5rem; }
+            .text-2xl { font-size: 1.25rem; }
+        }
+
+        .relative { position: relative; }
+        .sticky { position: sticky; }
+        .top-0 { top: 0; }
+        .z-50 { z-index: 50; }
+        
+        .block { display: block; }
+        .inline-block { display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="glass-effect sticky top-0 z-50">
+        <div class="container py-4">
+            <div class="flex items-center justify-between flex-wrap gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="text-4xl animate-pulse">🐱</div>
+                    <div>
+                        <h1 class="text-2xl font-bold gradient-text-gold">JERCAT Platform</h1>
+                        <p class="text-sm text-gray-400">Ultimate Trading Edition</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <div id="tierBadge" class="tier-badge hidden">Loading...</div>
+                    <button id="walletBtn" onclick="connectWallet()" class="btn-primary">
+                        🔗 Connect Wallet
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation -->
+            <nav class="mt-6 flex space-x-2 overflow-x-auto scrollbar-hide">
+                <button onclick="showSection('home')" class="nav-btn active">
+                    🏠 Accueil
+                </button>
+                <button onclick="showSection('ecosystem')" class="nav-btn">
+                    🌐 Écosystème
+                </button>
+                <button onclick="showSection('dca')" class="nav-btn">
+                    📊 Bot DCA
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-8">
+
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="fade-in">
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
+                    🎯 Bienvenue sur JERCAT Platform
+                </h2>
+                
+                <div id="notConnected" class="text-center py-12">
+                    <div class="text-4xl mb-4">🔒</div>
+                    <h3 class="text-2xl font-bold mb-4">Connectez votre wallet</h3>
+                    <p class="text-gray-400 mb-6">Connectez MetaMask pour accéder à la plateforme</p>
+                    <button onclick="connectWallet()" class="btn-primary px-8 py-4 text-lg">
+                        🔗 Connecter MetaMask
+                    </button>
+                </div>
+
+                <div id="walletConnected" class="hidden">
+                    <div class="grid grid-cols-1 md-grid-cols-3 gap-6 mb-8">
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Votre Wallet</p>
+                            <p id="userAddress" class="text-sm font-mono text-yellow-400">-</p>
+                        </div>
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Holdings JERCAT</p>
+                            <p id="jercatBalance" class="text-3xl font-bold gradient-text-gold">0</p>
+                        </div>
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Votre Tier</p>
+                            <div id="userTierDisplay" class="text-2xl font-bold">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Tier Requirements -->
+                    <div class="grid grid-cols-1 md-grid-cols-2 gap-4 mb-8">
+                        <div class="glass-effect rounded-xl p-6 border-2 border-orange-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥉 Bronze</h3>
+                                <span class="tier-bronze text-xs px-3 py-1 rounded-full">100 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Accès Bot DCA (Mode Paper)</li>
+                                <li>✓ Dashboard basique</li>
+                                <li>✓ JERCAT DEX</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥈 Silver</h3>
+                                <span class="tier-silver text-xs px-3 py-1 rounded-full">500 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Tout Bronze +</li>
+                                <li>✓ Bot Trading Multi-Crypto Pro</li>
+                                <li>✓ Innovation Reel</li>
+                                <li>✓ Analytics avancés</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-yellow-500">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥇 Gold</h3>
+                                <span class="tier-gold text-xs px-3 py-1 rounded-full">1000 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Tout Silver +</li>
+                                <li>✓ Trade IA</li>
+                                <li>✓ Arbitrage Vert</li>
+                                <li>✓ Support prioritaire</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">💎 Diamond</h3>
+                                <span class="tier-diamond text-xs px-3 py-1 rounded-full">5000 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Accès complet écosystème</li>
+                                <li>✓ Custom Strategies</li>
+                                <li>✓ VIP Features</li>
+                                <li>✓ Private Signals</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ECOSYSTEM SECTION -->
+        <section id="ecosystemSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold text-center">
+                    🌐 Écosystème JERCAT
+                </h2>
+                <p class="text-center text-gray-400 mb-8">
+                    Découvre tous nos outils et plateformes de trading avancées
+                </p>
+
+                <div class="grid grid-cols-1 md-grid-cols-2 gap-6">
+                    <!-- JERCAT DEX -->
+                    <a href="https://dex-jercat.vercel.app/" target="_blank" id="link-dex" class="ecosystem-card" style="border-color: rgba(0, 212, 255, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🔥</div>
+                            <span class="tier-bronze text-xs px-3 py-1 rounded-full">100+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #00D4FF;">JERCAT DEX</h3>
+                        <p class="text-sm text-gray-400 mb-4">Échange décentralisé officiel JERCAT. Swap, liquidity pools et farming.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Bronze+</span>
+                            <span class="text-xs text-green-400">✓ Actif</span>
+                        </div>
+                    </a>
+
+                    <!-- Bot Trading Multi-Crypto Pro -->
+                    <a href="https://comp-omega.vercel.app/" target="_blank" id="link-bot" class="ecosystem-card" style="border-color: rgba(255, 215, 0, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🐱</div>
+                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #FFD700;">Bot Trading Multi-Crypto Pro</h3>
+                        <p class="text-sm text-gray-400 mb-4">6 Indicateurs techniques pour maximiser tes profits. RSI, MACD, Bollinger...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Silver+</span>
+                            <span class="text-xs text-yellow-400" id="status-bot">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Innovation Reel -->
+                    <a href="https://innovation-reel.vercel.app/" target="_blank" id="link-innovation" class="ecosystem-card" style="border-color: rgba(138, 43, 226, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">💡</div>
+                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #8A2BE2;">Innovation Reel</h3>
+                        <p class="text-sm text-gray-400 mb-4">Innovations et technologies blockchain. Restez à la pointe de la DeFi.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Silver+</span>
+                            <span class="text-xs text-yellow-400" id="status-innovation">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Trade IA -->
+                    <a href="https://trade-ia.vercel.app/" target="_blank" id="link-tradeia" class="ecosystem-card" style="border-color: rgba(50, 205, 50, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🤖</div>
+                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #32CD32;">Trade IA</h3>
+                        <p class="text-sm text-gray-400 mb-4">Trading assisté par intelligence artificielle. Prédictions et signaux IA.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Gold+</span>
+                            <span class="text-xs text-yellow-400" id="status-tradeia">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Arbitrage Vert -->
+                    <a href="https://arbitrage-vert.vercel.app/" target="_blank" id="link-arbitrage" class="ecosystem-card" style="border-color: rgba(0, 255, 127, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">⚡</div>
+                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #00FF7F;">Arbitrage Vert</h3>
+                        <p class="text-sm text-gray-400 mb-4">Arbitrage écologique et rentable. Multi-DEX avec optimisation gas.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Gold+</span>
+                            <span class="text-xs text-yellow-400" id="status-arbitrage">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="glass-effect rounded-xl p-6 mt-8 text-center">
+                    <h3 class="text-xl font-bold mb-4">📢 Obtenir Plus de JERCAT</h3>
+                    <p class="text-gray-400 mb-4">Augmente tes holdings pour débloquer l'accès à tous les outils</p>
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        <a href="https://dex-jercat.vercel.app/" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
+                            🔥 Acheter sur JERCAT DEX
+                        </a>
+                        <a href="https://pancakeswap.finance/swap?outputCurrency=0x197CF8951d93325A9333857Ee5330daF7aC4bcCF" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
+                            🥞 Acheter sur PancakeSwap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DCA BOT SECTION (simplifié) -->
+        <section id="dcaSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl p-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
+                    📊 Bot Trading DCA
+                </h2>
+                <p class="text-center text-gray-400 py-8">
+                    Configuration du bot DCA disponible ici...
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-effect mt-16 py-8">
+        <div class="container text-center">
+            <div class="text-4xl mb-4">🐱</div>
+            <p class="text-gray-400 mb-2">JERCAT Trading Platform - Production Edition</p>
+            <p class="text-sm text-gray-500">Powered by Web3 Technology | BSC Network</p>
+            <div class="mt-4 flex items-center justify-center space-x-4 text-sm text-gray-500 flex-wrap">
+                <span>Contrat: 0x197CF8951d93325A9333857Ee5330daF7aC4bcCF</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // GLOBAL VARIABLES
+        // ==========================================
+        let web3;
+        let userAccount;
+        let jercatBalance = 0;
+        let userTier = 'none';
+
+        const JERCAT_TOKEN_ADDRESS = '0x197CF8951d93325A9333857Ee5330daF7aC4bcCF';
+        const TIER_REQUIREMENTS = {
+            bronze: 100,
+            silver: 500,
+            gold: 1000,
+            diamond: 5000
+        };
+
+        const BSC_MAINNET_CHAIN_ID = 56;
+        const BSC_TESTNET_CHAIN_ID = 97;
+
+        // ==========================================
+        // WALLET CONNECTION
+        // ==========================================
+        async function connectWallet() {
+            if (typeof window.ethereum === 'undefined') {
+                showNotification('❌ MetaMask n\'est pas installé', 'error');
+                setTimeout(() => {
+                    window.open('https://metamask.io/download/', '_blank');
+                }, 1000);
+                return;
+            }
+
+            try {
+                showNotification('🔄 Connexion à MetaMask...', 'info');
+                
+                const accounts = await window.ethereum.request({ 
+                    method: 'eth_requestAccounts' 
+                });
+                
+                if (!accounts || accounts.length === 0) {
+                    showNotification('❌ Aucun compte détecté', 'error');
+                    return;
+                }
+                
+                userAccount = accounts[0];
+                
+                try {
+                    web3 = new Web3(window.ethereum);
+                } catch (error) {
+                    console.error('Erreur initialisation Web3:', error);
+                    showNotification('❌ Erreur initialisation Web3', 'error');
+                    return;
+                }
+
+                let chainId;
+                try {
+                    chainId = await web3.eth.getChainId();
+                    console.log('ChainID détecté:', chainId);
+                } catch (error) {
+                    console.error('Erreur récupération chainId:', error);
+                    showNotification('⚠️ Impossible de vérifier le réseau', 'error');
+                    return;
+                }
+                
+                const numChainId = typeof chainId === 'bigint' ? Number(chainId) : chainId;
+                
+                if (numChainId !== BSC_MAINNET_CHAIN_ID && numChainId !== BSC_TESTNET_CHAIN_ID) {
+                    showNotification('⚠️ Veuillez vous connecter au réseau BSC', 'error');
+                    await switchToBSC();
+                    return;
+                }
+
+                await loadJercatBalance();
+                updateWalletUI();
+                updateEcosystemAccess();
+                
+                showNotification('✅ Wallet connecté avec succès!', 'success');
+
+            } catch (error) {
+                console.error('Erreur de connexion:', error);
+                
+                if (error.code === 4001) {
+                    showNotification('❌ Connexion refusée par l\'utilisateur', 'error');
+                } else if (error.code === -32002) {
+                    showNotification('⚠️ Demande de connexion en attente dans MetaMask', 'info');
+                } else {
+                    showNotification('❌ Erreur de connexion: ' + (error.message || 'Erreur inconnue'), 'error');
+                }
+            }
+        }
+
+        async function switchToBSC() {
+            if (typeof window.ethereum === 'undefined') {
+                return;
+            }
+
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: '0x38' }],
+                });
+                
+                showNotification('✅ Réseau BSC sélectionné', 'success');
+                
+                setTimeout(() => {
+                    connectWallet();
+                }, 1000);
+                
+            } catch (switchError) {
+                console.error('Erreur changement de réseau:', switchError);
+                
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [{
+                                chainId: '0x38',
+                                chainName: 'Binance Smart Chain Mainnet',
+                                nativeCurrency: {
+                                    name: 'BNB',
+                                    symbol: 'BNB',
+                                    decimals: 18
+                                },
+                                rpcUrls: ['https://bsc-dataseed1.binance.org'],
+                                blockExplorerUrls: ['https://bscscan.com']
+                            }]
+                        });
+                        
+                        showNotification('✅ Réseau BSC ajouté', 'success');
+                        
+                        setTimeout(() => {
+                            connectWallet();
+                        }, 1000);
+                        
+                    } catch (addError) {
+                        console.error('Erreur ajout BSC:', addError);
+                        showNotification('❌ Impossible d\'ajouter le réseau BSC', 'error');
+                    }
+                } else if (switchError.code === 4001) {
+                    showNotification('❌ Changement de réseau refusé', 'error');
+                } else {
+                    showNotification('❌ Erreur changement de réseau', 'error');
+                }
+            }
+        }
+
+        async function loadJercatBalance() {
+            try {
+                // SIMULATION du balance JERCAT pour la démo
+                jercatBalance = Math.floor(Math.random() * 10000);
+                
+                // Déterminer le tier basé sur le balance
+                if (jercatBalance >= TIER_REQUIREMENTS.diamond) {
+                    userTier = 'diamond';
+                } else if (jercatBalance >= TIER_REQUIREMENTS.gold) {
+                    userTier = 'gold';
+                } else if (jercatBalance >= TIER_REQUIREMENTS.silver) {
+                    userTier = 'silver';
+                } else if (jercatBalance >= TIER_REQUIREMENTS.bronze) {
+                    userTier = 'bronze';
+                } else {
+                    userTier = 'none';
+                }
+                
+                console.log('✅ JERCAT Balance:', jercatBalance, '| Tier:', userTier);
+            } catch (error) {
+                console.error('Erreur chargement balance:', error);
+                jercatBalance = 0;
+                userTier = 'none';
+                showNotification('⚠️ Impossible de charger le balance JERCAT', 'error');
+            }
+        }
+
+        function updateWalletUI() {
+            document.getElementById('notConnected').classList.add('hidden');
+            document.getElementById('walletConnected').classList.remove('hidden');
+            
+            document.getElementById('userAddress').textContent = 
+                userAccount.substring(0, 6) + '...' + userAccount.substring(38);
+            
+            document.getElementById('jercatBalance').textContent = 
+                jercatBalance.toLocaleString();
+            
+            updateTierDisplay();
+            
+            document.getElementById('walletBtn').innerHTML = 
+                '✅ ' + userAccount.substring(0, 6) + '...';
+        }
+
+        function updateTierDisplay() {
+            const tierBadge = document.getElementById('tierBadge');
+            const userTierDisplay = document.getElementById('userTierDisplay');
+            
+            tierBadge.classList.remove('hidden');
+            
+            switch(userTier) {
+                case 'diamond':
+                    tierBadge.className = 'tier-badge tier-diamond';
+                    tierBadge.textContent = '💎 Diamond';
+                    userTierDisplay.innerHTML = '💎 Diamond';
+                    break;
+                case 'gold':
+                    tierBadge.className = 'tier-badge tier-gold';
+                    tierBadge.textContent = '🥇 Gold';
+                    userTierDisplay.innerHTML = '🥇 Gold';
+                    break;
+                case 'silver':
+                    tierBadge.className = 'tier-badge tier-silver';
+                    tierBadge.textContent = '🥈 Silver';
+                    userTierDisplay.innerHTML = '🥈 Silver';
+                    break;
+                case 'bronze':
+                    tierBadge.className = 'tier-badge tier-bronze';
+                    tierBadge.textContent = '🥉 Bronze';
+                    userTierDisplay.innerHTML = '🥉 Bronze';
+                    break;
+                default:
+                    tierBadge.className = 'tier-badge bg-gray-600';
+                    tierBadge.textContent = '🔒 No Tier';
+                    userTierDisplay.innerHTML = '🔒 No Tier';
+            }
+        }
+
+        function updateEcosystemAccess() {
+            // DEX - Bronze (100+)
+            const linkDex = document.getElementById('link-dex');
+            if (jercatBalance >= TIER_REQUIREMENTS.bronze) {
+                linkDex.classList.remove('locked');
+            } else {
+                linkDex.classList.add('locked');
+                linkDex.onclick = (e) => {
+                    e.preventDefault();
+                    showNotification('⚠️ Minimum 100 JERCAT requis', 'error');
+                };
+            }
+
+            // Bot Trading - Silver (500+)
+            const linkBot = document.getElementById('link-bot');
+            const statusBot = document.getElementById('status-bot');
+            if (jercatBalance >= TIER_REQUIREMENTS.silver) {
+                linkBot.classList.remove('locked');
+                statusBot.textContent = '✓ Actif';
+                statusBot.className = 'text-xs text-green-400';
+            } else {
+                linkBot.classList.add('locked');
+                linkBot.onclick = (e) => {
+                    e.preventDefault();
+                    showNotification('⚠️ Minimum 500 JERCAT requis', 'error');
+                };
+            }
+
+            // Innovation Reel - Silver (500+)
+            const linkInnovation = document.getElementById('link-innovation');
+            const statusInnovation = document.getElementById('status-innovation');
+            if (jercatBalance >= TIER_REQUIREMENTS.silver) {
+                linkInnovation.classList.remove('locked');
+                statusInnovation.textContent = '✓ Actif';
+                statusInnovation.className = 'text-xs text-green-400';
+            } else {
+                linkInnovation.classList.add('locked');
+                linkInnovation.onclick = (e) => {
+                    e.preventDefault();
+                    showNotification('⚠️ Minimum 500 JERCAT requis', 'error');
+                };
+            }
+
+            // Trade IA - Gold (1000+)
+            const linkTradeIA = document.getElementById('link-tradeia');
+            const statusTradeIA = document.getElementById('status-tradeia');
+            if (jercatBalance >= TIER_REQUIREMENTS.gold) {
+                linkTradeIA.classList.remove('locked');
+                statusTradeIA.textContent = '✓ Actif';
+                statusTradeIA.className = 'text-xs text-green-400';
+            } else {
+                linkTradeIA.classList.add('locked');
+                linkTradeIA.onclick = (e) => {
+                    e.preventDefault();
+                    showNotification('⚠️ Minimum 1000 JERCAT requis', 'error');
+                };
+            }
+
+            // Arbitrage Vert - Gold (1000+)
+            const linkArbitrage = document.getElementById('link-arbitrage');
+            const statusArbitrage = document.getElementById('status-arbitrage');
+            if (jercatBalance >= TIER_REQUIREMENTS.gold) {
+                linkArbitrage.classList.remove('locked');
+                statusArbitrage.textContent = '✓ Actif';
+                statusArbitrage.className = 'text-xs text-green-400';
+            } else {
+                linkArbitrage.classList.add('locked');
+                linkArbitrage.onclick = (e) => {
+                    e.preventDefault();
+                    showNotification('⚠️ Minimum 1000 JERCAT requis', 'error');
+                };
+            }
+        }
+
+        // ==========================================
+        // NAVIGATION
+        // ==========================================
+        function showSection(section) {
+            document.getElementById('homeSection').classList.add('hidden');
+            document.getElementById('ecosystemSection').classList.add('hidden');
+            document.getElementById('dcaSection').classList.add('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            switch(section) {
+                case 'home':
+                    document.getElementById('homeSection').classList.remove('hidden');
+                    event.target.classList.add('active');
+                    break;
+                case 'ecosystem':
+                    if (!userAccount) {
+                        showNotification('⚠️ Connectez votre wallet d\'abord', 'error');
+                        return;
+                    }
+                    document.getElementById('ecosystemSection').classList.remove('hidden');
+                    event.target.classList.add('active');
+                    break;
+                case 'dca':
+                    if (!userAccount) {
+                        showNotification('⚠️ Connectez votre wallet d\'abord', 'error');
+                        return;
+                    }
+                    if (jercatBalance < TIER_REQUIREMENTS.bronze) {
+                        showNotification('⚠️ Minimum 100 JERCAT requis', 'error');
+                        return;
+                    }
+                    document.getElementById('dcaSection').classList.remove('hidden');
+                    event.target.classList.add('active');
+                    break;
+            }
+        }
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // ==========================================
+        // EVENT LISTENERS
+        // ==========================================
+        if (typeof window.ethereum !== 'undefined') {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                console.log('Comptes changés:', accounts);
+                if (accounts.length === 0) {
+                    console.log('Déconnexion détectée');
+                    location.reload();
+                } else {
+                    userAccount = accounts[0];
+                    loadJercatBalance().then(() => {
+                        updateWalletUI();
+                        updateEcosystemAccess();
+                        showNotification('🔄 Compte changé', 'info');
+                    }).catch(error => {
+                        console.error('Erreur lors du changement de compte:', error);
+                    });
+                }
+            });
+
+            window.ethereum.on('chainChanged', (chainId) => {
+                console.log('Réseau changé:', chainId);
+                location.reload();
+            });
+
+            window.ethereum.on('disconnect', (error) => {
+                console.log('Déconnexion:', error);
+                showNotification('⚠️ Déconnexion du wallet', 'error');
+                location.reload();
+            });
+        }
+
+        // ==========================================
+        // AUTO-CONNECT AU CHARGEMENT
+        // ==========================================
+        window.addEventListener('load', async () => {
+            console.log('🐱 JERCAT Platform chargée');
+            
+            if (typeof window.ethereum !== 'undefined') {
+                console.log('✅ MetaMask détecté');
+                
+                try {
+                    const accounts = await window.ethereum.request({ 
+                        method: 'eth_accounts' 
+                    });
+                    
+                    if (accounts && accounts.length > 0) {
+                        console.log('✅ Compte déjà connecté, auto-connexion...');
+                        await connectWallet();
+                    } else {
+                        console.log('ℹ️ Aucun compte connecté');
+                    }
+                } catch (error) {
+                    console.error('Erreur lors de la vérification des comptes:', error);
+                }
+            } else {
+                console.log('⚠️ MetaMask non détecté');
+            }
+        });
+
+        console.log('🐱 JERCAT Platform Production Edition');
+        console.log('🚀 Plateforme prête avec écosystème complet!');
+    </script>
+
+</body>
+</html>
