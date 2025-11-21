@@ -649,12 +649,40 @@
         <!-- DCA BOT SECTION -->
         <section id="dcaSection" class="hidden fade-in">
             <div class="glass-effect rounded-2xl p-8">
-                <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold text-center">
                     📊 Bot Trading DCA
                 </h2>
-                <p class="text-center text-gray-400 py-8">
-                    Configuration du bot DCA disponible ici...
+                <p class="text-center text-gray-400 mb-8">
+                    Automatisez vos investissements avec la stratégie Dollar Cost Averaging
                 </p>
+                
+                <div class="glass-effect rounded-xl p-8 text-center" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); border: 2px solid rgba(255, 215, 0, 0.3);">
+                    <div class="text-5xl mb-4 animate-pulse">📊</div>
+                    <h3 class="text-2xl font-bold mb-3 gradient-text-gold">Bot DCA Automatisé</h3>
+                    <p class="text-gray-400 mb-6">Investissez régulièrement et automatiquement pour réduire les risques</p>
+                    
+                    <div class="grid grid-cols-1 md-grid-cols-3 gap-4 mb-8">
+                        <div class="glass-effect rounded-lg p-4">
+                            <div class="text-2xl mb-2">⏰</div>
+                            <p class="text-sm font-bold mb-1">Automatique</p>
+                            <p class="text-xs text-gray-400">Achats programmés réguliers</p>
+                        </div>
+                        <div class="glass-effect rounded-lg p-4">
+                            <div class="text-2xl mb-2">📉</div>
+                            <p class="text-sm font-bold mb-1">Réduction des Risques</p>
+                            <p class="text-xs text-gray-400">Lissage du prix d'achat moyen</p>
+                        </div>
+                        <div class="glass-effect rounded-lg p-4">
+                            <div class="text-2xl mb-2">📊</div>
+                            <p class="text-sm font-bold mb-1">Stratégie Éprouvée</p>
+                            <p class="text-xs text-gray-400">Méthode validée par les experts</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://reboot-20.vercel.app/" target="_blank" class="btn-primary px-8 py-4 inline-block text-center text-lg" style="text-decoration: none;">
+                        🚀 Lancer le Bot DCA
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -824,7 +852,6 @@
 
         async function loadJercatBalance() {
             try {
-                // ABI minimal pour balanceOf et decimals
                 const minABI = [
                     {
                         "constant": true,
@@ -842,19 +869,11 @@
                     }
                 ];
 
-                // Créer l'instance du contrat
                 const jercatContract = new web3.eth.Contract(minABI, JERCAT_TOKEN_ADDRESS);
-                
-                // Récupérer le balance
                 const balanceWei = await jercatContract.methods.balanceOf(userAccount).call();
-                
-                // Récupérer les decimals
                 const decimals = await jercatContract.methods.decimals().call();
-                
-                // Convertir en nombre lisible
                 jercatBalance = Math.floor(balanceWei / Math.pow(10, decimals));
                 
-                // Déterminer le tier basé sur le balance
                 if (jercatBalance >= TIER_REQUIREMENTS.diamond) {
                     userTier = 'diamond';
                 } else if (jercatBalance >= TIER_REQUIREMENTS.gold) {
@@ -927,7 +946,6 @@
         }
 
         function updateEcosystemAccess() {
-            // DEX - Bronze (100+)
             const linkDex = document.getElementById('link-dex');
             if (jercatBalance >= TIER_REQUIREMENTS.bronze) {
                 linkDex.classList.remove('locked');
@@ -939,7 +957,6 @@
                 };
             }
 
-            // Bot Trading - Silver (500+)
             const linkBot = document.getElementById('link-bot');
             const statusBot = document.getElementById('status-bot');
             if (jercatBalance >= TIER_REQUIREMENTS.silver) {
@@ -954,7 +971,6 @@
                 };
             }
 
-            // Innovation Reel - Silver (500+)
             const linkInnovation = document.getElementById('link-innovation');
             const statusInnovation = document.getElementById('status-innovation');
             if (jercatBalance >= TIER_REQUIREMENTS.silver) {
@@ -969,7 +985,6 @@
                 };
             }
 
-            // Trade IA - Gold (1000+)
             const linkTradeIA = document.getElementById('link-tradeia');
             const statusTradeIA = document.getElementById('status-tradeia');
             if (jercatBalance >= TIER_REQUIREMENTS.gold) {
@@ -984,7 +999,6 @@
                 };
             }
 
-            // Arbitrage Vert - Gold (1000+)
             const linkArbitrage = document.getElementById('link-arbitrage');
             const statusArbitrage = document.getElementById('status-arbitrage');
             if (jercatBalance >= TIER_REQUIREMENTS.gold) {
