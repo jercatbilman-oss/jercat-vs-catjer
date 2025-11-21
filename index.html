@@ -824,8 +824,35 @@
 
         async function loadJercatBalance() {
             try {
-                // SIMULATION du balance JERCAT pour la démo
-                jercatBalance = Math.floor(Math.random() * 10000);
+                // ABI minimal pour balanceOf et decimals
+                const minABI = [
+                    {
+                        "constant": true,
+                        "inputs": [{"name": "_owner", "type": "address"}],
+                        "name": "balanceOf",
+                        "outputs": [{"name": "balance", "type": "uint256"}],
+                        "type": "function"
+                    },
+                    {
+                        "constant": true,
+                        "inputs": [],
+                        "name": "decimals",
+                        "outputs": [{"name": "", "type": "uint8"}],
+                        "type": "function"
+                    }
+                ];
+
+                // Créer l'instance du contrat
+                const jercatContract = new web3.eth.Contract(minABI, JERCAT_TOKEN_ADDRESS);
+                
+                // Récupérer le balance
+                const balanceWei = await jercatContract.methods.balanceOf(userAccount).call();
+                
+                // Récupérer les decimals
+                const decimals = await jercatContract.methods.decimals().call();
+                
+                // Convertir en nombre lisible
+                jercatBalance = Math.floor(balanceWei / Math.pow(10, decimals));
                 
                 // Déterminer le tier basé sur le balance
                 if (jercatBalance >= TIER_REQUIREMENTS.diamond) {
