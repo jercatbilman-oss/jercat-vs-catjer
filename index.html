@@ -71,6 +71,7 @@
 
         .text-center { text-align: center; }
         .text-right { text-align: right; }
+        .text-left { text-align: left; }
         
         .font-bold { font-weight: 700; }
         .font-mono { font-family: monospace; }
@@ -82,6 +83,7 @@
         .text-2xl { font-size: 1.5rem; }
         .text-3xl { font-size: 1.875rem; }
         .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
 
         .rounded-lg { border-radius: 0.5rem; }
         .rounded-xl { border-radius: 0.75rem; }
@@ -93,17 +95,20 @@
         .p-8 { padding: 2rem; }
         .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
         .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
         .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
         .px-8 { padding-left: 2rem; padding-right: 2rem; }
         
         .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-6 { margin-bottom: 1.5rem; }
         .mb-8 { margin-bottom: 2rem; }
         .mt-4 { margin-top: 1rem; }
         .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
         .mt-16 { margin-top: 4rem; }
 
         .w-full { width: 100%; }
@@ -355,6 +360,7 @@
             .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
             .text-3xl { font-size: 1.5rem; }
             .text-2xl { font-size: 1.25rem; }
+            .text-5xl { font-size: 2rem; }
         }
 
         .relative { position: relative; }
@@ -368,15 +374,28 @@
 </head>
 <body>
 
+    <!-- Hero Banner -->
+    <div class="glass-effect py-6">
+        <div class="container text-center">
+            <div class="flex items-center justify-center gap-4 mb-2">
+                <div class="text-5xl animate-pulse">🐱</div>
+                <h1 class="text-4xl font-bold gradient-text-gold">JERCAT</h1>
+                <div class="text-5xl animate-pulse">🦁</div>
+            </div>
+            <p class="text-2xl font-bold text-white mb-2">Le chat qui rugit sur la BSC</p>
+            <p class="text-sm text-gray-400">Trading puissant • Écosystème complet • Communauté unie</p>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="glass-effect sticky top-0 z-50">
         <div class="container py-4">
             <div class="flex items-center justify-between flex-wrap gap-4">
                 <div class="flex items-center space-x-4">
-                    <div class="text-4xl animate-pulse">🐱</div>
+                    <div class="text-3xl animate-pulse">🐱</div>
                     <div>
-                        <h1 class="text-2xl font-bold gradient-text-gold">JERCAT Platform</h1>
-                        <p class="text-sm text-gray-400">Ultimate Trading Edition</p>
+                        <h2 class="text-xl font-bold gradient-text-gold">JERCAT Platform</h2>
+                        <p class="text-xs text-gray-400">Ultimate Trading Edition</p>
                     </div>
                 </div>
                 
@@ -404,7 +423,7 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container py-8">
+    <main class="container py-8" style="padding-bottom: 80px;">
 
         <!-- HOME SECTION -->
         <section id="homeSection" class="fade-in">
@@ -435,6 +454,41 @@
                         <div class="glass-effect rounded-xl p-6 text-center">
                             <p class="text-gray-400 mb-2">Votre Tier</p>
                             <div id="userTierDisplay" class="text-2xl font-bold">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Buy JERCAT Section -->
+                    <div class="glass-effect rounded-xl p-8 mb-8 text-center" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); border: 2px solid rgba(255, 215, 0, 0.3);">
+                        <div class="text-5xl mb-4 animate-pulse">🐱</div>
+                        <h3 class="text-3xl font-bold mb-3 gradient-text-gold">Acheter JERCAT Token</h3>
+                        <p class="text-xl mb-2 text-white">Le chat qui rugit sur la BSC 🦁</p>
+                        <p class="text-sm text-gray-400 mb-6 font-mono">0x197CF8951d93325A9333857Ee5330daF7aC4bcCF</p>
+                        
+                        <div class="flex justify-center gap-4 flex-wrap mb-6">
+                            <a href="https://dex-jercat.vercel.app/" target="_blank" class="btn-primary px-8 py-4 inline-block text-center text-lg" style="text-decoration: none; background: linear-gradient(135deg, #00D4FF 0%, #0088CC 100%);">
+                                🔥 JERCAT DEX
+                            </a>
+                            <a href="https://pancakeswap.finance/swap?outputCurrency=0x197CF8951d93325A9333857Ee5330daF7aC4bcCF" target="_blank" class="btn-primary px-8 py-4 inline-block text-center text-lg" style="text-decoration: none;">
+                                🥞 PancakeSwap
+                            </a>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md-grid-cols-3 gap-4 text-left">
+                            <div class="glass-effect rounded-lg p-4">
+                                <div class="text-2xl mb-2">⚡</div>
+                                <p class="text-sm font-bold mb-1">Rapide & Sécurisé</p>
+                                <p class="text-xs text-gray-400">Transactions instantanées sur BSC</p>
+                            </div>
+                            <div class="glass-effect rounded-lg p-4">
+                                <div class="text-2xl mb-2">💎</div>
+                                <p class="text-sm font-bold mb-1">Débloquez les Tiers</p>
+                                <p class="text-xs text-gray-400">Accédez à tous les outils premium</p>
+                            </div>
+                            <div class="glass-effect rounded-lg p-4">
+                                <div class="text-2xl mb-2">🌐</div>
+                                <p class="text-sm font-bold mb-1">Écosystème Complet</p>
+                                <p class="text-xs text-gray-400">DEX, Bot Trading, IA et plus</p>
+                            </div>
                         </div>
                     </div>
 
@@ -592,7 +646,7 @@
             </div>
         </section>
 
-        <!-- DCA BOT SECTION (simplifié) -->
+        <!-- DCA BOT SECTION -->
         <section id="dcaSection" class="hidden fade-in">
             <div class="glass-effect rounded-2xl p-8">
                 <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
@@ -607,13 +661,17 @@
     </main>
 
     <!-- Footer -->
-    <footer class="glass-effect mt-16 py-8">
-        <div class="container text-center">
-            <div class="text-4xl mb-4">🐱</div>
-            <p class="text-gray-400 mb-2">JERCAT Trading Platform - Production Edition</p>
-            <p class="text-sm text-gray-500">Powered by Web3 Technology | BSC Network</p>
-            <div class="mt-4 flex items-center justify-center space-x-4 text-sm text-gray-500 flex-wrap">
-                <span>Contrat: 0x197CF8951d93325A9333857Ee5330daF7aC4bcCF</span>
+    <footer class="glass-effect mt-16 py-3" style="position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;">
+        <div class="container">
+            <div class="flex items-center justify-between flex-wrap gap-2 text-xs">
+                <div class="flex items-center space-x-2">
+                    <span class="text-2xl">🐱</span>
+                    <span class="text-gray-400">JERCAT Trading Platform - Production Edition</span>
+                </div>
+                <div class="flex items-center space-x-4 text-gray-500 flex-wrap">
+                    <span>Powered by Web3 Technology | BSC Network</span>
+                    <span class="font-mono">Contrat: 0x197CF8951d93325A9333857Ee5330daF7aC4bcCF</span>
+                </div>
             </div>
         </div>
     </footer>
