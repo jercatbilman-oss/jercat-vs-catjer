@@ -82,6 +82,7 @@
         .text-2xl { font-size: 1.5rem; }
         .text-3xl { font-size: 1.875rem; }
         .text-4xl { font-size: 2.25rem; }
+        .text-5xl { font-size: 3rem; }
 
         .rounded-lg { border-radius: 0.5rem; }
         .rounded-xl { border-radius: 0.75rem; }
@@ -93,6 +94,7 @@
         .p-8 { padding: 2rem; }
         .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
         .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
         .px-4 { padding-left: 1rem; padding-right: 1rem; }
         .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
@@ -355,6 +357,7 @@
             .grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
             .text-3xl { font-size: 1.5rem; }
             .text-2xl { font-size: 1.25rem; }
+            .text-5xl { font-size: 2rem; }
         }
 
         .relative { position: relative; }
@@ -368,15 +371,28 @@
 </head>
 <body>
 
+    <!-- Hero Banner -->
+    <div class="glass-effect py-6">
+        <div class="container text-center">
+            <div class="flex items-center justify-center gap-4 mb-2">
+                <div class="text-5xl animate-pulse">🐱</div>
+                <h1 class="text-4xl font-bold gradient-text-gold">JERCAT</h1>
+                <div class="text-5xl animate-pulse">🦁</div>
+            </div>
+            <p class="text-2xl font-bold text-white mb-2">Le chat qui rugit sur la BSC</p>
+            <p class="text-sm text-gray-400">Trading puissant • Écosystème complet • Communauté unie</p>
+        </div>
+    </div>
+
     <!-- Header -->
     <header class="glass-effect sticky top-0 z-50">
         <div class="container py-4">
             <div class="flex items-center justify-between flex-wrap gap-4">
                 <div class="flex items-center space-x-4">
-                    <div class="text-4xl animate-pulse">🐱</div>
+                    <div class="text-3xl animate-pulse">🐱</div>
                     <div>
-                        <h1 class="text-2xl font-bold gradient-text-gold">JERCAT Platform</h1>
-                        <p class="text-sm text-gray-400">Ultimate Trading Edition</p>
+                        <h2 class="text-xl font-bold gradient-text-gold">JERCAT Platform</h2>
+                        <p class="text-xs text-gray-400">Ultimate Trading Edition</p>
                     </div>
                 </div>
                 
@@ -388,211 +404,7 @@
                 </div>
             </div>
 
-            <!-- Navigation -->
-            <nav class="mt-6 flex space-x-2 overflow-x-auto scrollbar-hide">
-                <button onclick="showSection('home')" class="nav-btn active">
-                    🏠 Accueil
-                </button>
-                <button onclick="showSection('ecosystem')" class="nav-btn">
-                    🌐 Écosystème
-                </button>
-                <button onclick="showSection('dca')" class="nav-btn">
-                    📊 Bot DCA
-                </button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <main class="container py-8">
-
-        <!-- HOME SECTION -->
-        <section id="homeSection" class="fade-in">
-            <div class="glass-effect rounded-2xl p-8 mb-8">
-                <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
-                    🎯 Bienvenue sur JERCAT Platform
-                </h2>
-                
-                <div id="notConnected" class="text-center py-12">
-                    <div class="text-4xl mb-4">🔒</div>
-                    <h3 class="text-2xl font-bold mb-4">Connectez votre wallet</h3>
-                    <p class="text-gray-400 mb-6">Connectez MetaMask pour accéder à la plateforme</p>
-                    <button onclick="connectWallet()" class="btn-primary px-8 py-4 text-lg">
-                        🔗 Connecter MetaMask
-                    </button>
-                </div>
-
-                <div id="walletConnected" class="hidden">
-                    <div class="grid grid-cols-1 md-grid-cols-3 gap-6 mb-8">
-                        <div class="glass-effect rounded-xl p-6 text-center">
-                            <p class="text-gray-400 mb-2">Votre Wallet</p>
-                            <p id="userAddress" class="text-sm font-mono text-yellow-400">-</p>
-                        </div>
-                        <div class="glass-effect rounded-xl p-6 text-center">
-                            <p class="text-gray-400 mb-2">Holdings JERCAT</p>
-                            <p id="jercatBalance" class="text-3xl font-bold gradient-text-gold">0</p>
-                        </div>
-                        <div class="glass-effect rounded-xl p-6 text-center">
-                            <p class="text-gray-400 mb-2">Votre Tier</p>
-                            <div id="userTierDisplay" class="text-2xl font-bold">-</div>
-                        </div>
-                    </div>
-
-                    <!-- Tier Requirements -->
-                    <div class="grid grid-cols-1 md-grid-cols-2 gap-4 mb-8">
-                        <div class="glass-effect rounded-xl p-6 border-2 border-orange-700">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">🥉 Bronze</h3>
-                                <span class="tier-bronze text-xs px-3 py-1 rounded-full">100 JERCAT</span>
-                            </div>
-                            <ul class="text-sm text-gray-300 space-y-2">
-                                <li>✓ Accès Bot DCA (Mode Paper)</li>
-                                <li>✓ Dashboard basique</li>
-                                <li>✓ JERCAT DEX</li>
-                            </ul>
-                        </div>
-
-                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">🥈 Silver</h3>
-                                <span class="tier-silver text-xs px-3 py-1 rounded-full">500 JERCAT</span>
-                            </div>
-                            <ul class="text-sm text-gray-300 space-y-2">
-                                <li>✓ Tout Bronze +</li>
-                                <li>✓ Bot Trading Multi-Crypto Pro</li>
-                                <li>✓ Innovation Reel</li>
-                                <li>✓ Analytics avancés</li>
-                            </ul>
-                        </div>
-
-                        <div class="glass-effect rounded-xl p-6 border-2 border-yellow-500">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">🥇 Gold</h3>
-                                <span class="tier-gold text-xs px-3 py-1 rounded-full">1000 JERCAT</span>
-                            </div>
-                            <ul class="text-sm text-gray-300 space-y-2">
-                                <li>✓ Tout Silver +</li>
-                                <li>✓ Trade IA</li>
-                                <li>✓ Arbitrage Vert</li>
-                                <li>✓ Support prioritaire</li>
-                            </ul>
-                        </div>
-
-                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
-                            <div class="flex items-center justify-between mb-4">
-                                <h3 class="text-xl font-bold">💎 Diamond</h3>
-                                <span class="tier-diamond text-xs px-3 py-1 rounded-full">5000 JERCAT</span>
-                            </div>
-                            <ul class="text-sm text-gray-300 space-y-2">
-                                <li>✓ Accès complet écosystème</li>
-                                <li>✓ Custom Strategies</li>
-                                <li>✓ VIP Features</li>
-                                <li>✓ Private Signals</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ECOSYSTEM SECTION -->
-        <section id="ecosystemSection" class="hidden fade-in">
-            <div class="glass-effect rounded-2xl p-8 mb-8">
-                <h2 class="text-3xl font-bold mb-6 gradient-text-gold text-center">
-                    🌐 Écosystème JERCAT
-                </h2>
-                <p class="text-center text-gray-400 mb-8">
-                    Découvre tous nos outils et plateformes de trading avancées
-                </p>
-
-                <div class="grid grid-cols-1 md-grid-cols-2 gap-6">
-                    <!-- JERCAT DEX -->
-                    <a href="https://dex-jercat.vercel.app/" target="_blank" id="link-dex" class="ecosystem-card" style="border-color: rgba(0, 212, 255, 0.5);">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="text-4xl">🔥</div>
-                            <span class="tier-bronze text-xs px-3 py-1 rounded-full">100+ JERCAT</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: #00D4FF;">JERCAT DEX</h3>
-                        <p class="text-sm text-gray-400 mb-4">Échange décentralisé officiel JERCAT. Swap, liquidity pools et farming.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Tier: Bronze+</span>
-                            <span class="text-xs text-green-400">✓ Actif</span>
-                        </div>
-                    </a>
-
-                    <!-- Bot Trading Multi-Crypto Pro -->
-                    <a href="https://comp-omega.vercel.app/" target="_blank" id="link-bot" class="ecosystem-card" style="border-color: rgba(255, 215, 0, 0.5);">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="text-4xl">🐱</div>
-                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: #FFD700;">Bot Trading Multi-Crypto Pro</h3>
-                        <p class="text-sm text-gray-400 mb-4">6 Indicateurs techniques pour maximiser tes profits. RSI, MACD, Bollinger...</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Tier: Silver+</span>
-                            <span class="text-xs text-yellow-400" id="status-bot">🔒 Verrouillé</span>
-                        </div>
-                    </a>
-
-                    <!-- Innovation Reel -->
-                    <a href="https://innovation-reel.vercel.app/" target="_blank" id="link-innovation" class="ecosystem-card" style="border-color: rgba(138, 43, 226, 0.5);">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="text-4xl">💡</div>
-                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: #8A2BE2;">Innovation Reel</h3>
-                        <p class="text-sm text-gray-400 mb-4">Innovations et technologies blockchain. Restez à la pointe de la DeFi.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Tier: Silver+</span>
-                            <span class="text-xs text-yellow-400" id="status-innovation">🔒 Verrouillé</span>
-                        </div>
-                    </a>
-
-                    <!-- Trade IA -->
-                    <a href="https://trade-ia.vercel.app/" target="_blank" id="link-tradeia" class="ecosystem-card" style="border-color: rgba(50, 205, 50, 0.5);">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="text-4xl">🤖</div>
-                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: #32CD32;">Trade IA</h3>
-                        <p class="text-sm text-gray-400 mb-4">Trading assisté par intelligence artificielle. Prédictions et signaux IA.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Tier: Gold+</span>
-                            <span class="text-xs text-yellow-400" id="status-tradeia">🔒 Verrouillé</span>
-                        </div>
-                    </a>
-
-                    <!-- Arbitrage Vert -->
-                    <a href="https://arbitrage-vert.vercel.app/" target="_blank" id="link-arbitrage" class="ecosystem-card" style="border-color: rgba(0, 255, 127, 0.5);">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="text-4xl">⚡</div>
-                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2" style="color: #00FF7F;">Arbitrage Vert</h3>
-                        <p class="text-sm text-gray-400 mb-4">Arbitrage écologique et rentable. Multi-DEX avec optimisation gas.</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs text-gray-500">Tier: Gold+</span>
-                            <span class="text-xs text-yellow-400" id="status-arbitrage">🔒 Verrouillé</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="glass-effect rounded-xl p-6 mt-8 text-center">
-                    <h3 class="text-xl font-bold mb-4">📢 Obtenir Plus de JERCAT</h3>
-                    <p class="text-gray-400 mb-4">Augmente tes holdings pour débloquer l'accès à tous les outils</p>
-                    <div class="flex justify-center gap-4 flex-wrap">
-                        <a href="https://dex-jercat.vercel.app/" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
-                            🔥 Acheter sur JERCAT DEX
-                        </a>
-                        <a href="https://pancakeswap.finance/swap?outputCurrency=0x197CF8951d93325A9333857Ee5330daF7aC4bcCF" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
-                            🥞 Acheter sur PancakeSwap
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- DCA BOT SECTION (simplifié) -->
+            <!-- DCA BOT SECTION (simplifié) -->
         <section id="dcaSection" class="hidden fade-in">
             <div class="glass-effect rounded-2xl p-8">
                 <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
@@ -1036,4 +848,208 @@
     </script>
 
 </body>
-</html>
+</html> Navigation -->
+            <nav class="mt-6 flex space-x-2 overflow-x-auto scrollbar-hide">
+                <button onclick="showSection('home')" class="nav-btn active">
+                    🏠 Accueil
+                </button>
+                <button onclick="showSection('ecosystem')" class="nav-btn">
+                    🌐 Écosystème
+                </button>
+                <button onclick="showSection('dca')" class="nav-btn">
+                    📊 Bot DCA
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container py-8">
+
+        <!-- HOME SECTION -->
+        <section id="homeSection" class="fade-in">
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold">
+                    🎯 Bienvenue sur JERCAT Platform
+                </h2>
+                
+                <div id="notConnected" class="text-center py-12">
+                    <div class="text-4xl mb-4">🔒</div>
+                    <h3 class="text-2xl font-bold mb-4">Connectez votre wallet</h3>
+                    <p class="text-gray-400 mb-6">Connectez MetaMask pour accéder à la plateforme</p>
+                    <button onclick="connectWallet()" class="btn-primary px-8 py-4 text-lg">
+                        🔗 Connecter MetaMask
+                    </button>
+                </div>
+
+                <div id="walletConnected" class="hidden">
+                    <div class="grid grid-cols-1 md-grid-cols-3 gap-6 mb-8">
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Votre Wallet</p>
+                            <p id="userAddress" class="text-sm font-mono text-yellow-400">-</p>
+                        </div>
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Holdings JERCAT</p>
+                            <p id="jercatBalance" class="text-3xl font-bold gradient-text-gold">0</p>
+                        </div>
+                        <div class="glass-effect rounded-xl p-6 text-center">
+                            <p class="text-gray-400 mb-2">Votre Tier</p>
+                            <div id="userTierDisplay" class="text-2xl font-bold">-</div>
+                        </div>
+                    </div>
+
+                    <!-- Tier Requirements -->
+                    <div class="grid grid-cols-1 md-grid-cols-2 gap-4 mb-8">
+                        <div class="glass-effect rounded-xl p-6 border-2 border-orange-700">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥉 Bronze</h3>
+                                <span class="tier-bronze text-xs px-3 py-1 rounded-full">100 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Accès Bot DCA (Mode Paper)</li>
+                                <li>✓ Dashboard basique</li>
+                                <li>✓ JERCAT DEX</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥈 Silver</h3>
+                                <span class="tier-silver text-xs px-3 py-1 rounded-full">500 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Tout Bronze +</li>
+                                <li>✓ Bot Trading Multi-Crypto Pro</li>
+                                <li>✓ Innovation Reel</li>
+                                <li>✓ Analytics avancés</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-yellow-500">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">🥇 Gold</h3>
+                                <span class="tier-gold text-xs px-3 py-1 rounded-full">1000 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Tout Silver +</li>
+                                <li>✓ Trade IA</li>
+                                <li>✓ Arbitrage Vert</li>
+                                <li>✓ Support prioritaire</li>
+                            </ul>
+                        </div>
+
+                        <div class="glass-effect rounded-xl p-6 border-2 border-cyan-400">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-xl font-bold">💎 Diamond</h3>
+                                <span class="tier-diamond text-xs px-3 py-1 rounded-full">5000 JERCAT</span>
+                            </div>
+                            <ul class="text-sm text-gray-300 space-y-2">
+                                <li>✓ Accès complet écosystème</li>
+                                <li>✓ Custom Strategies</li>
+                                <li>✓ VIP Features</li>
+                                <li>✓ Private Signals</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ECOSYSTEM SECTION -->
+        <section id="ecosystemSection" class="hidden fade-in">
+            <div class="glass-effect rounded-2xl p-8 mb-8">
+                <h2 class="text-3xl font-bold mb-6 gradient-text-gold text-center">
+                    🌐 Écosystème JERCAT
+                </h2>
+                <p class="text-center text-gray-400 mb-8">
+                    Découvre tous nos outils et plateformes de trading avancées
+                </p>
+
+                <div class="grid grid-cols-1 md-grid-cols-2 gap-6">
+                    <!-- JERCAT DEX -->
+                    <a href="https://dex-jercat.vercel.app/" target="_blank" id="link-dex" class="ecosystem-card" style="border-color: rgba(0, 212, 255, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🔥</div>
+                            <span class="tier-bronze text-xs px-3 py-1 rounded-full">100+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #00D4FF;">JERCAT DEX</h3>
+                        <p class="text-sm text-gray-400 mb-4">Échange décentralisé officiel JERCAT. Swap, liquidity pools et farming.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Bronze+</span>
+                            <span class="text-xs text-green-400">✓ Actif</span>
+                        </div>
+                    </a>
+
+                    <!-- Bot Trading Multi-Crypto Pro -->
+                    <a href="https://comp-omega.vercel.app/" target="_blank" id="link-bot" class="ecosystem-card" style="border-color: rgba(255, 215, 0, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🐱</div>
+                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #FFD700;">Bot Trading Multi-Crypto Pro</h3>
+                        <p class="text-sm text-gray-400 mb-4">6 Indicateurs techniques pour maximiser tes profits. RSI, MACD, Bollinger...</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Silver+</span>
+                            <span class="text-xs text-yellow-400" id="status-bot">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Innovation Reel -->
+                    <a href="https://innovation-reel.vercel.app/" target="_blank" id="link-innovation" class="ecosystem-card" style="border-color: rgba(138, 43, 226, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">💡</div>
+                            <span class="tier-silver text-xs px-3 py-1 rounded-full">500+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #8A2BE2;">Innovation Reel</h3>
+                        <p class="text-sm text-gray-400 mb-4">Innovations et technologies blockchain. Restez à la pointe de la DeFi.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Silver+</span>
+                            <span class="text-xs text-yellow-400" id="status-innovation">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Trade IA -->
+                    <a href="https://trade-ia.vercel.app/" target="_blank" id="link-tradeia" class="ecosystem-card" style="border-color: rgba(50, 205, 50, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">🤖</div>
+                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #32CD32;">Trade IA</h3>
+                        <p class="text-sm text-gray-400 mb-4">Trading assisté par intelligence artificielle. Prédictions et signaux IA.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Gold+</span>
+                            <span class="text-xs text-yellow-400" id="status-tradeia">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+
+                    <!-- Arbitrage Vert -->
+                    <a href="https://arbitrage-vert.vercel.app/" target="_blank" id="link-arbitrage" class="ecosystem-card" style="border-color: rgba(0, 255, 127, 0.5);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="text-4xl">⚡</div>
+                            <span class="tier-gold text-xs px-3 py-1 rounded-full">1000+ JERCAT</span>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2" style="color: #00FF7F;">Arbitrage Vert</h3>
+                        <p class="text-sm text-gray-400 mb-4">Arbitrage écologique et rentable. Multi-DEX avec optimisation gas.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-500">Tier: Gold+</span>
+                            <span class="text-xs text-yellow-400" id="status-arbitrage">🔒 Verrouillé</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="glass-effect rounded-xl p-6 mt-8 text-center">
+                    <h3 class="text-xl font-bold mb-4">📢 Obtenir Plus de JERCAT</h3>
+                    <p class="text-gray-400 mb-4">Augmente tes holdings pour débloquer l'accès à tous les outils</p>
+                    <div class="flex justify-center gap-4 flex-wrap">
+                        <a href="https://dex-jercat.vercel.app/" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
+                            🔥 Acheter sur JERCAT DEX
+                        </a>
+                        <a href="https://pancakeswap.finance/swap?outputCurrency=0x197CF8951d93325A9333857Ee5330daF7aC4bcCF" target="_blank" class="btn-primary px-6 py-3 inline-block text-center" style="text-decoration: none;">
+                            🥞 Acheter sur PancakeSwap
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
